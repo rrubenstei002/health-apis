@@ -37,9 +37,9 @@
   </properties>
   <modules>
     <module>service-starter</module>
-    <!--
     <module>ids-api</module>
     <module>ids</module>
+    <!--
     <module>mr-anderson</module>
     -->
   </modules>
