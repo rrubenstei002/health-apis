@@ -199,7 +199,7 @@
             <phase>process-sources</phase>
             <configuration>
               <target>
-                <fixcrlf srcDir="${project.basedir}" includes="pom.xml,*.md,src/**" eol="lf" eof="remove"/>
+                <fixcrlf eof="remove" eol="lf" includes="pom.xml,*.md,src/**" srcDir="${project.basedir}"/>
               </target>
             </configuration>
             <goals>
@@ -317,7 +317,11 @@
                         def missed = lines.@missed.toInteger()
                         def covered = lines.@covered.toInteger()
                         def awesomeness=Math.floor(100*covered/(missed+covered))
-                        log.info(Ansi.ansi().bold().fgMagenta().a(String.format("%3.0f%% ", awesomeness)).fgDefault().a(name).reset().toString())
+                        log.info(Ansi.ansi()
+                            .bold().fgMagenta().a(String.format("%3.0f%%  ", awesomeness))
+                            .reset().a(String.format("%4d %5d  ",missed,missed+covered))
+                            .bold().fgDefault().a(name)
+                            .reset().toString())
                   }
 
                   def report = new File(project.build.directory+'/site/jacoco/jacoco.xml')
@@ -325,7 +329,7 @@
                   if (report.exists()) {
                     def raw = ${jacoco.coverage}
                     log.info("")
-                    log.info("Line coverage")
+                    log.info("Cover Miss Total  Class")
                     def slurper = new XmlSlurper()
                     slurper.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd",false)
                     slurper.setFeature("http://xml.org/sax/features/namespaces", false)
