@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -29,8 +27,7 @@
     <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
     <spotbugs-maven-plugin.version>3.1.6</spotbugs-maven-plugin.version>
     <spotbugs.version>3.1.7</spotbugs.version>
-    <spotbugs.excludeFilterFile>${project.basedir}/spotbugs-excludes.xml
-    </spotbugs.excludeFilterFile>
+    <spotbugs.excludeFilterFile>${project.basedir}/spotbugs-excludes.xml</spotbugs.excludeFilterFile>
     <groovy.version>2.4.12</groovy.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.12</checkstyle.version>
@@ -38,8 +35,7 @@
     <findsecbugs-plugin.version>1.8.0</findsecbugs-plugin.version>
     <lighthouse-keystore.version>1.0.20</lighthouse-keystore.version>
     <git.enforceBranchNames>true</git.enforceBranchNames>
-    <git.allowedBranchNames>
-      <![CDATA[^(master|release/.*|PR-[0-9]+|.*/API-[0-9]+-.*)$]]></git.allowedBranchNames>
+    <git.allowedBranchNames><![CDATA[^(master|release/.*|PR-[0-9]+|.*/API-[0-9]+-.*)$]]></git.allowedBranchNames>
   </properties>
   <modules>
     <module>service-starter</module>
@@ -98,8 +94,7 @@
                   <shouldMatchTo>${git.allowedBranchNames}</shouldMatchTo>
                 </validationProperty>
               </validationProperties>
-              <validationShouldFailIfNoMatch>${git.enforceBranchNames}
-              </validationShouldFailIfNoMatch>
+              <validationShouldFailIfNoMatch>${git.enforceBranchNames}</validationShouldFailIfNoMatch>
             </configuration>
           </execution>
         </executions>
@@ -185,6 +180,10 @@
           <lineEnding>LF</lineEnding>
           <skipJavaFormatting>true</skipJavaFormatting>
           <skipXmlFormatting>true</skipXmlFormatting>
+          <excludes>
+            <exclude>**/*.java</exclude>
+            <exclude>**/*.xml</exclude>
+          </excludes>
         </configuration>
         <executions>
           <execution>
@@ -204,8 +203,7 @@
             <phase>process-sources</phase>
             <configuration>
               <target>
-                <fixcrlf eof="remove" eol="lf" includes="pom.xml,*.md,src/**"
-                  srcDir="${project.basedir}"/>
+                <fixcrlf eof="remove" eol="lf" includes="pom.xml,*.md,src/**" srcDir="${project.basedir}"/>
               </target>
             </configuration>
             <goals>
