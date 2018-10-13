@@ -3,6 +3,7 @@ package gov.va.api.health.ids.service.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.ids.api.ResourceIdentity;
 import lombok.SneakyThrows;
 import org.junit.Test;

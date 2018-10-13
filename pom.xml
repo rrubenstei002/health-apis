@@ -39,6 +39,7 @@
   </properties>
   <modules>
     <module>service-starter</module>
+    <module>service-auto-config</module>
     <module>ids-api</module>
     <module>ids</module>
     <!--
@@ -309,7 +310,7 @@
             <configuration>
               <scripts>
                 <!--
-                  This blog of weirdness looks for the JaCoCo report and prints a small summary of line coverage.
+                  This blob of weirdness looks for the JaCoCo report and prints a small summary of line coverage.
                 -->
                 <!-- @formatter:off -->
                 <!--suppress MavenModelInspection -->
