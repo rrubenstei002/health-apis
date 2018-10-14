@@ -1,8 +1,9 @@
 # health-apis
 
-This project encapsulates the Health APIs with a focus on 
-[Argonaut](http://www.fhir.org/guides/argonaut/r2/profiles.html) compliance.
-
+This project encapsulates the Health APIs. The system consists of three 
+[Spring Boot](https://spring.io/projects/spring-boot) microservices that provide
+[Argonaut](http://www.fhir.org/guides/argonaut/r2/profiles.html) compliant resources
+backed by information from the Corporate Data Warehouse.
 
 ###### Health API applications
 ![applications](src/plantuml/apps.png)
