@@ -19,7 +19,7 @@ backed by information from the Corporate Data Warehouse.
   with the following plugins
   - [Lombok](https://projectlombok.org/)
   - [Google Java Format](https://github.com/google/google-java-format)
-    
+- [git-secrets](https://github.com/awslabs/git-secrets)    
 
 #### Maven
 - Formats Java, XML, and JSON files
@@ -32,4 +32,15 @@ backed by information from the Corporate Data Warehouse.
 
 
 The above build steps can be skipped for use with IDE launch support by disabling the
-_standard_ profile, e.g. `mvn -P'!standard' package` 
+_standard_ profile, e.g. `mvn -P'!standard' package`
+
+
+#### git-secrets
+git-secrets must be installed and configured to scan for AWS entries and the patterns in 
+[.git-secrets-patterns](.git-secrets-patterns). 
+The [init-git-secrets.sh](src/scripts/init-git-secrets.sh) can be used to simply set up.
+
+> ###### ⚠ Mac users
+> If using [Homebrew](https://brew.sh/), use `brew install --HEAD git-secrets` as decribed
+> by [this post](https://github.com/awslabs/git-secrets/issues/65#issuecomment-416382565) to
+> avoid issues committing multiple files.
