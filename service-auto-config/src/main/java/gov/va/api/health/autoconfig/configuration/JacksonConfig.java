@@ -1,8 +1,11 @@
 package gov.va.api.health.autoconfig.configuration;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -31,6 +34,7 @@ import org.springframework.context.annotation.Configuration;
  * <pre>
  * &#64;Value
  * &#64;Builder
+ * &#64;JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
  * public class Easy {
  *    String ack;
  *    String bar;
@@ -43,6 +47,7 @@ import org.springframework.context.annotation.Configuration;
  * &#64;JsonDeserialize(builder = Foo.FooBuilder.class)
  * &#64;Value
  * &#64;Builder
+ * &#64;JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
  * public class Foo {
  *    String ack;
  *    String bar;
@@ -60,14 +65,14 @@ public class JacksonConfig {
   @Bean
   public ObjectMapper objectMapper() {
     ObjectMapper mapper =
-        new ObjectMapper().registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-    mapper.setAnnotationIntrospector(new LombokAnnotationIntrospector());
-    mapper.setVisibility(
-        mapper
-            .getSerializationConfig()
-            .getDefaultVisibilityChecker()
-            .withFieldVisibility(Visibility.ANY));
+        new ObjectMapper()
+            .registerModule(new Jdk8Module())
+            .registerModule(new JavaTimeModule())
+            .setAnnotationIntrospector(new LombokAnnotationIntrospector())
+            .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .enable(MapperFeature.AUTO_DETECT_FIELDS)
+            .setVisibility(PropertyAccessor.ALL, Visibility.ANY);
     return mapper;
   }
 
