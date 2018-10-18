@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -13,6 +15,11 @@
   <version>1.0.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
+    <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
+    <docker.organization>health-apis</docker.organization>
+    <docker.baseImage>health-apis/application-base</docker.baseImage>
+    <docker.baseVersion>latest</docker.baseVersion>
+    <docker.tag>latest</docker.tag>
     <fmt-maven-plugin.version>2.3.0</fmt-maven-plugin.version>
     <google-java-format.version>1.5</google-java-format.version>
     <java.version>1.8</java.version>
@@ -27,7 +34,8 @@
     <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
     <spotbugs-maven-plugin.version>3.1.6</spotbugs-maven-plugin.version>
     <spotbugs.version>3.1.7</spotbugs.version>
-    <spotbugs.excludeFilterFile>${project.basedir}/spotbugs-excludes.xml</spotbugs.excludeFilterFile>
+    <spotbugs.excludeFilterFile>${project.basedir}/spotbugs-excludes.xml
+    </spotbugs.excludeFilterFile>
     <groovy.version>2.4.12</groovy.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.12</checkstyle.version>
@@ -35,7 +43,8 @@
     <findsecbugs-plugin.version>1.8.0</findsecbugs-plugin.version>
     <lighthouse-keystore.version>1.0.20</lighthouse-keystore.version>
     <git.enforceBranchNames>true</git.enforceBranchNames>
-    <git.allowedBranchNames><![CDATA[^(master|release/.*|PR-[0-9]+|.*/API-[0-9]+-.*)$]]></git.allowedBranchNames>
+    <git.allowedBranchNames>
+      <![CDATA[^(master|release/.*|PR-[0-9]+|.*/API-[0-9]+-.*)$]]></git.allowedBranchNames>
     <formatter-maven-plugin.version>2.7.5</formatter-maven-plugin.version>
   </properties>
   <modules>
@@ -97,7 +106,8 @@
                   <shouldMatchTo>${git.allowedBranchNames}</shouldMatchTo>
                 </validationProperty>
               </validationProperties>
-              <validationShouldFailIfNoMatch>${git.enforceBranchNames}</validationShouldFailIfNoMatch>
+              <validationShouldFailIfNoMatch>${git.enforceBranchNames}
+              </validationShouldFailIfNoMatch>
             </configuration>
           </execution>
         </executions>
@@ -216,7 +226,8 @@
                 <phase>process-sources</phase>
                 <configuration>
                   <target>
-                    <fixcrlf eof="remove" eol="lf" excludes="**/*.png" includes="pom.xml,*.md,src/**" srcDir="${project.basedir}"/>
+                    <fixcrlf eof="remove" eol="lf" excludes="**/*.png"
+                      includes="pom.xml,*.md,src/**" srcDir="${project.basedir}"/>
                   </target>
                 </configuration>
                 <goals>
@@ -407,6 +418,52 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker-maven-plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.organization}/${project.artifactId}</name>
+                  <build>
+                    <from>${docker.baseImage}:${docker.baseVersion}</from>
+                    <assembly>
+                      <targetDir>/tmp</targetDir>
+                      <inline>
+                        <files>
+                          <file>
+                            <source>target/${project.build.finalName}.jar</source>
+                          </file>
+                        </files>
+                      </inline>
+                    </assembly>
+                    <env>
+                      <AWS_APP_NAME>${project.build.finalName}</AWS_APP_NAME>
+                    </env>
+                    <runCmds>
+                      <run>mkdir -p /opt/va</run>
+                      <run>mv /tmp/${project.build.finalName}.jar /opt/va</run>
+                    </runCmds>
+                    <tags>
+                      <tag>${project.version}</tag>
+                      <tag>${docker.tag}</tag>
+                    </tags>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -414,7 +471,9 @@
   <distributionManagement>
     <repository>
       <id>health-apis-releases</id>
-      <url>http://internal-devtoolsinternalalb-1479233608.us-gov-west-1.elb.amazonaws.com/nexus/repository/health-apis-releases/</url>
+      <url>
+        http://internal-devtoolsinternalalb-1479233608.us-gov-west-1.elb.amazonaws.com/nexus/repository/health-apis-releases/
+      </url>
     </repository>
   </distributionManagement>
 </project>
