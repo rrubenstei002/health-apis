@@ -102,7 +102,7 @@
                       </inline>
                     </assembly>
                     <env>
-                      <AWS_APP_NAME>${project.build.finalName}</AWS_APP_NAME>
+                      <AWS_APP_NAME>${project.artifactId}</AWS_APP_NAME>
                     </env>
                     <runCmds>
                       <run>mkdir -p /opt/va</run>
