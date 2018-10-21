@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,13 +22,13 @@ import lombok.ToString;
  *
  * <pre>
  *   CREATE TABLE `resource_identity_detail` (
- *   `id` int(11) NOT NULL AUTO_INCREMENT,
+ *   `pk` int(11) NOT NULL AUTO_INCREMENT,
  *   `identifier` varchar(45) NOT NULL,
  *   `station_identifier` varchar(45) DEFAULT NULL,
  *   `uuid` varchar(45) NOT NULL,
  *   `system` varchar(45) NOT NULL,
  *   `resource` varchar(45) NOT NULL,
- *   PRIMARY KEY (`id`),
+ *   PRIMARY KEY (`pk`),
  *   UNIQUE KEY `uuid_UNIQUE` (`uuid`),
  *   UNIQUE KEY `station_urn_UNIQUE` (`station_identifier`,`identifier`)
  * ) ENGINE=InnoDB AUTO_INCREMENT=3353 DEFAULT CHARSET=utf8;
@@ -45,11 +46,12 @@ public class ResourceIdentityDetail {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  int id;
+  @Column(name = "pk")
+  int pk;
 
   @Column(name = "identifier")
   @Max(45)
+  @NotBlank
   String identifier;
 
   @Column(name = "station_identifier")
@@ -58,14 +60,17 @@ public class ResourceIdentityDetail {
 
   @Column(name = "uuid")
   @Max(45)
+  @NotBlank
   String uuid;
 
   @Column(name = "system")
   @Max(45)
+  @NotBlank
   String system;
 
   @Column(name = "resource")
   @Max(45)
+  @NotBlank
   String resource;
 
   @Override
@@ -77,12 +82,12 @@ public class ResourceIdentityDetail {
       return false;
     }
     ResourceIdentityDetail that = (ResourceIdentityDetail) o;
-    return id == that.id;
+    return pk == that.pk;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(pk);
   }
 
   /** Convert this database entity into a more friendly, non-JPA form. */
